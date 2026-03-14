@@ -1,14 +1,20 @@
 package com.example.personalportfolio
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,23 +40,22 @@ fun HomeScreen(
     if (showLogoutDialog) {
         AlertDialog(
             onDismissRequest = { showLogoutDialog = false },
-            title = { Text("Logout") },
-            text = { Text("Are you sure you want to logout?") },
+            title = { Text("Logout", fontWeight = FontWeight.Bold) },
+            text = { Text("Are you sure you want to logout from your portfolio?") },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showLogoutDialog = false
                         onLogout()
-                    }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("Yes")
+                    Text("Yes, Logout")
                 }
             },
             dismissButton = {
-                TextButton(
-                    onClick = { showLogoutDialog = false }
-                ) {
-                    Text("No")
+                TextButton(onClick = { showLogoutDialog = false }) {
+                    Text("Cancel")
                 }
             }
         )
@@ -58,113 +63,163 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("My Portfolio") },
+            TopAppBar(
+                title = { 
+                    Text(
+                        "My Portfolio", 
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.primary
+                    ) 
+                },
                 actions = {
-                    TextButton(onClick = { showLogoutDialog = true }) {
-                        Text("Logout")
+                    IconButton(onClick = { showLogoutDialog = true }) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ExitToApp, 
+                            contentDescription = "Logout",
+                            tint = MaterialTheme.colorScheme.error
+                        )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent
+                )
             )
         }
     ) { innerPadding ->
-        LazyColumn(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item {
-                // Profile Photo (Using a placeholder image)
-                Image(
-                    painter = painterResource(id = android.R.drawable.ic_menu_gallery), // Placeholder
-                    contentDescription = "Profile Photo",
-                    modifier = Modifier
-                        .size(120.dp)
-                        .clip(CircleShape),
-                    contentScale = ContentScale.Crop
-                )
-            }
-
-            item {
-                Text(
-                    text = name,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = bio,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.secondary
-                )
-            }
-
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Button(onClick = onEditClick) {
-                        Text("Edit Profile")
-                    }
-                    OutlinedButton(onClick = onChangePasswordClick) {
-                        Text("Change Password")
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(20.dp)
+            ) {
+                item {
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Box(
+                        modifier = Modifier
+                            .size(150.dp)
+                            .shadow(12.dp, CircleShape)
+                            .background(Color.White, CircleShape)
+                            .padding(4.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = android.R.drawable.ic_menu_gallery),
+                            contentDescription = "Profile Photo",
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
                     }
                 }
-            }
 
-            item {
-                PortfolioSection(title = "About Me", content = "Passionate Android developer with experience in Kotlin and Jetpack Compose. I love building clean and functional user interfaces.")
-            }
+                item {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = name,
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Black,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            text = bio,
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
 
-            item {
-                PortfolioSection(title = "Qualification", content = qualification)
-            }
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Button(
+                            onClick = onEditClick,
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(16.dp),
+                            elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
+                        ) {
+                            Text("Edit Profile", fontWeight = FontWeight.Bold)
+                        }
+                        OutlinedButton(
+                            onClick = onChangePasswordClick,
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(16.dp)
+                        ) {
+                            Text("Security", fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
 
-            item {
-                PortfolioSection(title = "Education", content = education)
-            }
+                item {
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant
+                    )
+                }
 
-            item {
-                PortfolioSection(title = "Experience", content = experience)
-            }
-
-            item {
-                PortfolioSection(title = "Skills", content = skills)
-            }
-
-            item {
-                PortfolioSection(title = "Contact", content = contact)
-            }
-            
-            item {
-                Spacer(modifier = Modifier.height(24.dp))
+                item {
+                    ModernPortfolioSection(title = "Qualification", content = qualification)
+                }
+                item {
+                    ModernPortfolioSection(title = "Education", content = education)
+                }
+                item {
+                    ModernPortfolioSection(title = "Experience", content = experience)
+                }
+                item {
+                    ModernPortfolioSection(title = "Skills", content = skills)
+                }
+                item {
+                    ModernPortfolioSection(
+                        title = "Contact", 
+                        content = contact
+                    )
+                }
+                
+                item {
+                    Spacer(modifier = Modifier.height(30.dp))
+                }
             }
         }
     }
 }
 
 @Composable
-fun PortfolioSection(title: String, content: String) {
+fun ModernPortfolioSection(title: String, content: String) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(4.dp, RoundedCornerShape(20.dp)),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+        )
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(20.dp)
         ) {
             Text(
                 text = title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.primary
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.primary,
+                letterSpacing = 1.sp
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = content,
-                fontSize = 14.sp
+                fontSize = 15.sp,
+                lineHeight = 22.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
