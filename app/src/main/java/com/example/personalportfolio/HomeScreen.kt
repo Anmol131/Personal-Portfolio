@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,6 +32,7 @@ fun HomeScreen(
     experience: String,
     skills: String,
     contact: String,
+    profileImageUri: String?,
     onLogout: () -> Unit, 
     onEditClick: () -> Unit, 
     onChangePasswordClick: () -> Unit
@@ -107,14 +109,25 @@ fun HomeScreen(
                             .background(Color.White, CircleShape)
                             .padding(4.dp)
                     ) {
-                        Image(
-                            painter = painterResource(id = android.R.drawable.ic_menu_gallery),
-                            contentDescription = "Profile Photo",
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
-                        )
+                        if (!profileImageUri.isNullOrEmpty()) {
+                            AsyncImage(
+                                model = profileImageUri,
+                                contentDescription = "Profile Photo",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            Image(
+                                painter = painterResource(id = android.R.drawable.ic_menu_gallery),
+                                contentDescription = "Profile Photo",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
                     }
                 }
 
