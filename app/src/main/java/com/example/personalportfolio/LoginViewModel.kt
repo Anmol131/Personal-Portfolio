@@ -38,6 +38,14 @@ class LoginViewModel : ViewModel() {
         }
     }
 
+    fun logout() {
+        loginSuccess = false
+        username = ""
+        password = ""
+        errorMessage = ""
+        toastMessage = "Logged out successfully"
+    }
+
     fun clearToastMessage() {
         toastMessage = null
     }

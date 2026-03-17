@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.personalportfolio.ui.theme.PersonalPortfolioTheme
 import java.io.File
 import java.io.FileOutputStream
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
                     context.getSharedPreferences("portfolio_prefs", Context.MODE_PRIVATE) 
                 }
 
+                val loginViewModel: LoginViewModel = viewModel()
                 var currentScreen by remember { mutableStateOf("login") }
                 
                 // Profile State - Persistent using SharedPreferences
@@ -63,6 +65,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     when (currentScreen) {
                         "login" -> LoginScreen(
+                            viewModel = loginViewModel,
                             onLoginSuccess = { currentScreen = "home" },
                             onSignupClick = { currentScreen = "signup" }
                         )
@@ -79,7 +82,10 @@ class MainActivity : ComponentActivity() {
                             skills = skills,
                             contact = contact,
                             profileImageUri = profileImageUri,
-                            onLogout = { currentScreen = "login" },
+                            onLogout = { 
+                                loginViewModel.logout() // Reset the login state
+                                currentScreen = "login" 
+                            },
                             onEditClick = { currentScreen = "edit" },
                             onChangePasswordClick = { currentScreen = "change_password" }
                         )
