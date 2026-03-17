@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.personalportfolio.ui.*
 import com.example.personalportfolio.ui.theme.PersonalPortfolioTheme
 import java.io.File
 import java.io.FileOutputStream
