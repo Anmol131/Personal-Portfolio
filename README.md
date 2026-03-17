@@ -6,10 +6,11 @@ A sleek, modern, and persistent Personal Portfolio application built with **Jetp
 
 ## ✨ Features
 
-### 🔐 Authentication System
-- **Login & Signup**: Secure entry point with validation logic.
+### 🔐 Authentication System (MVVM)
+- **Login & Signup**: Secure entry point with validation logic using the **MVVM architecture**.
 - **Change Password**: Dedicated security screen to update user credentials.
-- **Logout Confirmation**: Safety dialog to prevent accidental logouts.
+- **Logout Confirmation**: Safety dialog to prevent accidental logouts with proper state reset.
+- **Toast Notifications**: Real-time feedback for all user actions (success, failure, logout).
 
 ### 🏠 Dynamic Portfolio (Home)
 - **Professional Display**: Showcases Name, Bio, Education, Experience, and Skills in a clean, card-based layout.
@@ -32,10 +33,10 @@ A sleek, modern, and persistent Personal Portfolio application built with **Jetp
 
 - **Language**: Kotlin
 - **UI Framework**: Jetpack Compose
+- **Architecture**: MVVM (Model-View-ViewModel)
 - **Design System**: Material Design 3 (M3)
 - **Image Loading**: Coil (kt)
 - **Persistence**: SharedPreferences & Internal File Storage
-- **Architecture**: State-driven navigation and data flow
 
 ---
 
@@ -50,7 +51,7 @@ The app ensures your data is never lost, even after a device restart:
 ## 🚀 How to Run
 
 1. **Clone the project** into Android Studio.
-2. **Sync Gradle** to download dependencies (including Coil for image loading).
+2. **Sync Gradle** to download dependencies (including Coil and Lifecycle components).
 3. **Run the app** on an emulator or physical device.
 4. **Test Credentials**:
    - **Username**: `admin`
@@ -63,21 +64,21 @@ The app ensures your data is never lost, even after a device restart:
 
 | Login Screen | Home Portfolio | Edit Profile |
 | :---: | :---: | :---: |
-| ![Login](img.png) | ![Home](img_1.png) | ![Edit](img_2.png) |
-
-*(Note: Ensure screenshots are placed in the root directory as `img.png`, `img_1.png`, etc.)*
+| ![Login](login.jpeg) | ![Home](home.jpeg) | ![Edit](edit.jpeg) |
 
 ---
 
 ## 📝 TODO Checklist (Status)
 
 - [x] Login & Signup UI
-- [x] Navigation Logic
+- [x] MVVM Architecture Implementation
+- [x] Navigation Logic & Logout Fix
 - [x] Portfolio Home Display
 - [x] Edit Profile Functionality
 - [x] Image Upload Integration
 - [x] Local Data Persistence (Text + Images)
 - [x] Custom Pastel Theme
+- [x] Toast Notifications
 - [ ] Backend/Cloud Database Integration (Next Step)
 
 ---
