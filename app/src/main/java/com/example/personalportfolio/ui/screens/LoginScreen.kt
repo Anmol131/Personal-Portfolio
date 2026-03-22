@@ -39,8 +39,8 @@ fun LoginScreen(
 
     // Handle Toast Messages
     LaunchedEffect(uiState.toastMessage) {
-        uiState.toastMessage?.let {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        uiState.toastMessage?.let { message ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             viewModel.clearToastMessage()
         }
     }

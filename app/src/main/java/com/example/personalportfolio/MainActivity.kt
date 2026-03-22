@@ -17,7 +17,11 @@ import com.example.personalportfolio.data.repository.ProfileRepository
 import com.example.personalportfolio.data.repository.UserRepository
 import com.example.personalportfolio.ui.screens.*
 import com.example.personalportfolio.ui.theme.PersonalPortfolioTheme
-import com.example.personalportfolio.ui.viewmodel.*
+import com.example.personalportfolio.ui.viewmodel.LoginViewModel
+import com.example.personalportfolio.ui.viewmodel.HomeViewModel
+import com.example.personalportfolio.ui.viewmodel.EditProfileViewModel
+import com.example.personalportfolio.ui.viewmodel.SignupViewModel
+import com.example.personalportfolio.ui.viewmodel.ChangePasswordViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +38,7 @@ class MainActivity : ComponentActivity() {
                 // ViewModels with Factories
                 val homeViewModel: HomeViewModel = viewModel(
                     factory = object : ViewModelProvider.Factory {
+                        @Suppress("UNCHECKED_CAST")
                         override fun <T : ViewModel> create(modelClass: Class<T>): T {
                             return HomeViewModel(profileRepository) as T
                         }
@@ -42,6 +47,7 @@ class MainActivity : ComponentActivity() {
                 
                 val loginViewModel: LoginViewModel = viewModel(
                     factory = object : ViewModelProvider.Factory {
+                        @Suppress("UNCHECKED_CAST")
                         override fun <T : ViewModel> create(modelClass: Class<T>): T {
                             return LoginViewModel(userRepository) as T
                         }
@@ -50,6 +56,7 @@ class MainActivity : ComponentActivity() {
 
                 val editProfileViewModel: EditProfileViewModel = viewModel(
                     factory = object : ViewModelProvider.Factory {
+                        @Suppress("UNCHECKED_CAST")
                         override fun <T : ViewModel> create(modelClass: Class<T>): T {
                             return EditProfileViewModel(profileRepository) as T
                         }
