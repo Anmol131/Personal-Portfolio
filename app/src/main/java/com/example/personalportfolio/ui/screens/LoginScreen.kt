@@ -1,4 +1,4 @@
-package com.example.personalportfolio.ui
+package com.example.personalportfolio.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -19,34 +19,27 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.personalportfolio.viewmodel.LoginViewModel
+import com.example.personalportfolio.ui.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = viewModel(),
+    viewModel: LoginViewModel,
     onLoginSuccess: () -> Unit, 
     onSignupClick: () -> Unit
 ) {
     val context = LocalContext.current
-
-    // Observe state from ViewModel
-    val username = viewModel.username
-    val password = viewModel.password
-    val errorMessage = viewModel.errorMessage
-    val loginSuccess = viewModel.loginSuccess
-    val toastMessage = viewModel.toastMessage
+    val uiState by viewModel.uiState.collectAsState()
 
     // Handle Login Success Navigation
-    LaunchedEffect(loginSuccess) {
-        if (loginSuccess) {
+    LaunchedEffect(uiState.loginSuccess) {
+        if (uiState.loginSuccess) {
             onLoginSuccess()
         }
     }
 
     // Handle Toast Messages
-    LaunchedEffect(toastMessage) {
-        toastMessage?.let {
+    LaunchedEffect(uiState.toastMessage) {
+        uiState.toastMessage?.let {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             viewModel.clearToastMessage()
         }
@@ -98,7 +91,7 @@ fun LoginScreen(
                     )
 
                     OutlinedTextField(
-                        value = username,
+                        value = uiState.username,
                         onValueChange = { viewModel.onUsernameChange(it) },
                         label = { Text("Username") },
                         leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
@@ -110,7 +103,7 @@ fun LoginScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     OutlinedTextField(
-                        value = password,
+                        value = uiState.password,
                         onValueChange = { viewModel.onPasswordChange(it) },
                         label = { Text("Password") },
                         leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
@@ -121,9 +114,9 @@ fun LoginScreen(
                         shape = RoundedCornerShape(12.dp)
                     )
 
-                    if (errorMessage.isNotEmpty()) {
+                    if (uiState.errorMessage.isNotEmpty()) {
                         Text(
-                            text = errorMessage,
+                            text = uiState.errorMessage,
                             color = MaterialTheme.colorScheme.error,
                             fontSize = 12.sp,
                             modifier = Modifier.padding(top = 8.dp)
